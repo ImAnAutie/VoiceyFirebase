@@ -1,0 +1,37 @@
+<!-- PAGE CONTENT-TAG_ID -->
+
+<template-holder>
+    <template-render></template-render>
+    <template-template>
+        <h1>Hi there{{#if @global.user}} {{@global.user.displayName}}{{/if}},
+            welcome to {{@global.app.name}}!</h1>
+        {{#if @global.user}}
+            <button class="btn btn-danger signoutButton">Sign out</button>
+            <p>You can manage your {{@global.app.name}} boards here</p>
+            {{#if @global.userBoards}}
+            <div class="container">
+                <div class="row">
+            {{/if}}
+            {{#each @global.userBoards}}
+                <div class="col-sm">
+                    <button href="/boards/{{id}}" class="btn btn-primary" data-navigo>
+                        <img src="{{image}}" title="{{name}}" style="height:125px;" /> {{name}}
+                    </button>
+                </div>
+            {{else}}
+                <p>You have no boards
+                    <button href="/trySampleBoards" class="btn btn-success" data-navigo>
+                        Try some sample boards
+                    </button>
+                </p>
+            {{/each}}
+            {{#if @global.userBoards}}
+                    </div>
+                </div>
+            {{/if}}
+
+        {{else}}
+            <p>To get started please <button class="btn btn-success" href="/signin" data-navigo>Sign in</button></p>
+        {{/if}}
+    </template-template>
+</template-holder>

@@ -1,8 +1,31 @@
 rules_version = '2';
 service cloud.firestore {
 	match /databases/{database}/documents {
+		function isAnon() {
+			//Is there a anonymous auth authetnicated user?
+    		return request.auth != null && request.auth.token.firebase.sign_in_provider == "anonymous";
+    	}
+		function isAnonId(userId) {
+			//Is the current user an anonymous user with the specified user id?
+			return isAnon() && request.auth.uid == userId;
+		}
+		function isUser() {
+			//Is there an authenticated user who isn't anonymous?
+			return request.auth != null && !isAnon();
+		}
+		function isUserId(userId) {
+			//Is the current user not anonymous and has the specified user id?
+			return isUser() && request.auth.uid == userId;
+		}
+
 		match /authDocs/{anonUserId} {
-			allow read: if anonUserId == request.auth.uid;
+			allow read: if isAnonId(anonUserId);
+		}
+		match /boards/{boardId} {
+			allow read: if isUserId(resource.data.ownerId);
+			allow create: if isUserId(request.resource.data.ownerId);
+			allow update: if isUserId(resource.data.ownerId) && isUserId(request.resource.data.ownerId);
+			allow delete: if isUserId(resource.data.ownerId);
 		}
 	}
 }
