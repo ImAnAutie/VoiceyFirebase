@@ -24,7 +24,7 @@
     "@editorjs/quote": "^2.3.0",
     "@editorjs/raw": "^2.2.0",
     "@editorjs/table": "^1.2.2",
-    "firebase": "^8.1.2",
+    "firebase": "^8.6.3",
     "fuse.js": "^6.4.2",
     "jquery": "^3.5.1",
     "moment": "^2.29.1",
